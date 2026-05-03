@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm *)",
+      "Bash(npm create *)",
+      "PowerShell(npm create *)",
+      "PowerShell(npm install *)",
+      "PowerShell(npm run *)",
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); Set-Location \"C:\\\\Users\\\\Owner\\\\OneDrive\\\\デスクトップ\\\\資料\\\\antigravity platform\\\\puyopuyo\"; Start-Process -FilePath \"npm\" -ArgumentList \"run\",\"dev\" -NoNewWindow; Start-Sleep -Seconds 4; Write-Output \"Dev server started\")",
+      "PowerShell(Start-Process \"http://localhost:5173\")"
+    ]
+  }
+}
