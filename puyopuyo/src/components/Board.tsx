@@ -9,6 +9,7 @@ interface Props {
   ghost: Piece | null;
   popMask: boolean[][];
   chain: number;
+  cellSize?: number;
 }
 
 function pieceCells(p: Piece): { col: number; row: number; color: import('../game/types').Color }[] {
@@ -20,10 +21,9 @@ function pieceCells(p: Piece): { col: number; row: number; color: import('../gam
   return cells.filter(c => c.row >= 0 && c.row < ROWS);
 }
 
-const BOARD_W = COLS * CELL_SIZE;
-const BOARD_H = ROWS * CELL_SIZE;
-
-export function Board({ board, piece, ghost, popMask, chain }: Props) {
+export function Board({ board, piece, ghost, popMask, chain, cellSize = CELL_SIZE }: Props) {
+  const BOARD_W = COLS * cellSize;
+  const BOARD_H = ROWS * cellSize;
   const ghostCells = ghost ? pieceCells(ghost) : [];
   const pieceCellList = piece ? pieceCells(piece) : [];
 
@@ -40,7 +40,7 @@ export function Board({ board, piece, ghost, popMask, chain }: Props) {
           linear-gradient(rgba(80,80,255,0.04) 1px, transparent 1px),
           linear-gradient(90deg, rgba(80,80,255,0.04) 1px, transparent 1px)
         `,
-        backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`,
+        backgroundSize: `${cellSize}px ${cellSize}px`,
       }} />
 
       {/* Static board cells */}
@@ -53,10 +53,10 @@ export function Board({ board, piece, ghost, popMask, chain }: Props) {
               key={`${r}-${c}`}
               style={{
                 position: 'absolute',
-                left: c * CELL_SIZE + 2,
-                top: r * CELL_SIZE + 2,
-                width: CELL_SIZE - 4,
-                height: CELL_SIZE - 4,
+                left: c * cellSize + 2,
+                top: r * cellSize + 2,
+                width: cellSize - 4,
+                height: cellSize - 4,
               }}
             >
               <PuyoCell color={cell} popping={popping} />
@@ -71,10 +71,10 @@ export function Board({ board, piece, ghost, popMask, chain }: Props) {
           key={`ghost-${col}-${row}`}
           style={{
             position: 'absolute',
-            left: col * CELL_SIZE + 2,
-            top: row * CELL_SIZE + 2,
-            width: CELL_SIZE - 4,
-            height: CELL_SIZE - 4,
+            left: col * cellSize + 2,
+            top: row * cellSize + 2,
+            width: cellSize - 4,
+            height: cellSize - 4,
           }}
         >
           <PuyoCell color={color} ghost />
@@ -85,13 +85,13 @@ export function Board({ board, piece, ghost, popMask, chain }: Props) {
       {pieceCellList.map(({ col, row, color }, idx) => (
         <motion.div
           key={`piece-${idx}`}
-          initial={{ x: col * CELL_SIZE + 2, y: row * CELL_SIZE + 2 }}
-          animate={{ x: col * CELL_SIZE + 2, y: row * CELL_SIZE + 2 }}
+          initial={{ x: col * cellSize + 2, y: row * cellSize + 2 }}
+          animate={{ x: col * cellSize + 2, y: row * cellSize + 2 }}
           transition={{ duration: 0.07, ease: 'linear' }}
           style={{
             position: 'absolute',
-            width: CELL_SIZE - 4,
-            height: CELL_SIZE - 4,
+            width: cellSize - 4,
+            height: cellSize - 4,
           }}
         >
           <PuyoCell color={color} />
