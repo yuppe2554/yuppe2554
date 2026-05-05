@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useGame } from './hooks/useGame';
 import { useKeyboard } from './hooks/useKeyboard';
 import { useCellSize } from './hooks/useCellSize';
@@ -6,6 +6,7 @@ import { Board } from './components/Board';
 import { Sidebar } from './components/Sidebar';
 import { Overlay } from './components/Overlay';
 import { TouchControls } from './components/TouchControls';
+import { TutorialPage } from './components/TutorialPage';
 import { PuyoCell } from './components/PuyoCell';
 import { COLS, ROWS } from './game/constants';
 
@@ -19,13 +20,19 @@ const panel: React.CSSProperties = {
 };
 
 export default function App() {
+  const [mode, setMode] = useState<'game' | 'tutorial'>('game');
   const { state, ghost, level, bestScore, move, rotateCw, rotateCcw, hardDrop, pause, start, restart, setSoftDrop } = useGame();
   const { cellSize, isMobile } = useCellSize();
 
-  const kbActive = state.phase !== 'start' && state.phase !== 'gameover';
+  const kbActive = mode === 'game' && state.phase !== 'start' && state.phase !== 'gameover';
   useKeyboard({ move, rotateCw, rotateCcw, hardDrop, pause, setSoftDrop }, kbActive);
 
   const handleResume = useCallback(() => pause(), [pause]);
+  const handleTutorial = useCallback(() => setMode('tutorial'), []);
+
+  if (mode === 'tutorial') {
+    return <TutorialPage onExit={() => setMode('game')} />;
+  }
 
   const boardW = COLS * cellSize;
   const boardH = ROWS * cellSize;
@@ -122,6 +129,7 @@ export default function App() {
               onStart={start}
               onRestart={restart}
               onResume={handleResume}
+              onTutorial={handleTutorial}
             />
           </div>
         </div>

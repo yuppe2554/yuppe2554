@@ -10,6 +10,7 @@ interface Props {
   onStart: () => void;
   onRestart: () => void;
   onResume: () => void;
+  onTutorial?: () => void;
 }
 
 const backdrop: React.CSSProperties = {
@@ -80,7 +81,7 @@ function Btn({ children, onClick, primary }: {
   );
 }
 
-export function Overlay({ phase, paused, score, maxChain, bestScore, onStart, onRestart, onResume }: Props) {
+export function Overlay({ phase, paused, score, maxChain, bestScore, onStart, onRestart, onResume, onTutorial }: Props) {
   if (phase === 'start') {
     return (
       <motion.div
@@ -102,6 +103,9 @@ export function Overlay({ phase, paused, score, maxChain, bestScore, onStart, on
           </div>
           <div style={subtitle}>Connect 4 or more puyos to clear them!</div>
           <Btn onClick={onStart} primary>Start Game</Btn>
+          {onTutorial && (
+            <Btn onClick={onTutorial}>チュートリアル</Btn>
+          )}
         </motion.div>
       </motion.div>
     );
